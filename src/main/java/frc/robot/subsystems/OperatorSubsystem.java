@@ -107,13 +107,13 @@ public class OperatorSubsystem extends SubsystemBase
     
     public void shooterOut()
     {
-      MotorControllers.Shooter1Motor.setControl(m_request.withVelocity(-95)); //CW
+      MotorControllers.Shooter1Motor.setControl(m_request.withVelocity(-Constants.MotorSpeeds.SHOOTER_VELOCITY)); //CW
       //MotorControllers.Shooter2Motor.set(-1 * Constants.MotorSpeeds.SHOOTER); //CW
     }
 
     public void farShooterOut()
     {
-      MotorControllers.Shooter1Motor.setControl(m_request.withVelocity(-100)); //CW
+      MotorControllers.Shooter1Motor.setControl(m_request.withVelocity(-Constants.MotorSpeeds.SHOOTER_VELOCITY)); //CW
       //MotorControllers.Shooter2Motor.set(-1 * Constants.MotorSpeeds.LAUNCH); //CW
     }
     
