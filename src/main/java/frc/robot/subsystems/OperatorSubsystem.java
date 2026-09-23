@@ -54,7 +54,13 @@ public class OperatorSubsystem extends SubsystemBase
   @Override
   public void periodic()
   {
-    // This method will be called once per scheduler run
+    // Handle delayed kicker/conveyor start
+    if (m_shooterStarted && m_shooterDelayTimer.get() >= Constants.MotorSpeeds.KICKER_DELAY)
+    {
+      kickerIn();
+      conveyorFwd();
+      m_shooterStarted = false;
+    }
   }
 
   /* START Feeder methods */
@@ -87,18 +93,6 @@ public class OperatorSubsystem extends SubsystemBase
       m_shooterStarted = true;
       m_shooterDelayTimer.reset();
       m_shooterDelayTimer.start();
-    }
-    
-    @Override
-    public void periodic()
-    {
-      // Handle delayed kicker/conveyor start
-      if (m_shooterStarted && m_shooterDelayTimer.get() >= Constants.MotorSpeeds.KICKER_DELAY)
-      {
-        kickerIn();
-        conveyorFwd();
-        m_shooterStarted = false;
-      }
     }
     
     public void LAUNCH()
