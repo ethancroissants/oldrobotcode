@@ -33,7 +33,7 @@ public final class Constants
     {
         public static final double SHOOTER = 0.5;
         public static final double SHOOTER_VELOCITY = 45.0; // RPS for velocity control
-      public static final double KICKER_DELAY = 0.7; // seconds to wait before kicker starts
+      public static final double KICKER_DELAY = 1.5; // seconds to wait before kicker starts
         public static final double KICKER = 0.9;
         public static final double CONVEYOR = 1.0;
         public static final double HOOD = 0.2;
