@@ -33,7 +33,7 @@ public class AutoFire extends Command
   @Override
   public void execute()
   {
-    if (m_timer.get() < Constants.KICKER_DELAY) // Spin up the shooter before running the kicker and conveyor
+    if (m_timer.get() < Constants.MotorSpeeds.KICKER_DELAY) // Spin up the shooter before running the kicker and conveyor
     {
       operatorSubsystem.shooterOut(); //Run the shooter only to get it up to speed before feeding balls into it
     } else {
