@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 //import frc.robot.RobotContainer;
+import frc.robot.Constants;
 import frc.robot.subsystems.OperatorSubsystem;
 
 public class AutoFire extends Command
@@ -32,7 +33,7 @@ public class AutoFire extends Command
   @Override
   public void execute()
   {
-    if (m_timer.get() < 0.7) // Spin up the shooter for 0.5 seconds before running the kicker and conveyor to feed balls into the shooter
+    if (m_timer.get() < Constants.KICKER_DELAY) // Spin up the shooter before running the kicker and conveyor
     {
       operatorSubsystem.shooterOut(); //Run the shooter only to get it up to speed before feeding balls into it
     } else {
