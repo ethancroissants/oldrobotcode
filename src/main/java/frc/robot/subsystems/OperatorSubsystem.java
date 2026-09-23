@@ -20,6 +20,7 @@ import com.ctre.phoenix6.signals.MotorAlignmentValue;
 //import edu.wpi.first.units.measure.*;
 //import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.MotorControllers;
 //import frc.robot.RobotContainer;
@@ -27,16 +28,18 @@ import frc.robot.MotorControllers;
 public class OperatorSubsystem extends SubsystemBase
 {
  public final VelocityVoltage m_request = new VelocityVoltage(0).withSlot(0);
+ private final Timer m_shooterDelayTimer = new Timer();
 
   /* Be able to switch which control request to use based on a button press */
   PositionVoltage m_positionVoltage = new PositionVoltage(0);
   public boolean feederStatus = false;
+  private boolean m_shooterStarted = false;
 
   // Open-loop control request (percent output)
   private final DutyCycleOut dutyCycle = new DutyCycleOut(0);
 
   //Shooter Max speed
-  private static final double SHOOTER_SPEED = 1.0; // Full speed
+  private static final double SHOOTER_SPEED = Constants.MotorSpeeds.SHOOTER;
 
   /**
    * Creates a new OperatorSubsystem.
@@ -79,20 +82,38 @@ public class OperatorSubsystem extends SubsystemBase
   /* START Shooter methods */ 
     public void FIRE()
     {
+      // Start shooter first, delay kicker/conveyor
       shooterOut();
-      kickerIn();
-      conveyorFwd();
+      m_shooterStarted = true;
+      m_shooterDelayTimer.reset();
+      m_shooterDelayTimer.start();
     }
-
+    
+    @Override
+    public void periodic()
+    {
+      // Handle delayed kicker/conveyor start
+      if (m_shooterStarted && m_shooterDelayTimer.get() >= Constants.MotorSpeeds.KICKER_DELAY)
+      {
+        kickerIn();
+        conveyorFwd();
+        m_shooterStarted = false;
+      }
+    }
+    
     public void LAUNCH()
     {
+      // Start shooter first, delay kicker/conveyor
       farShooterOut();
-      kickerIn();
-      conveyorFwd();
+      m_shooterStarted = true;
+      m_shooterDelayTimer.reset();
+      m_shooterDelayTimer.start();
     }
 
     public void ceaseFire()
     {
+      m_shooterStarted = false;
+      m_shooterDelayTimer.stop();
       stopKicker();
       stopConveyor();
       stopShooter();
